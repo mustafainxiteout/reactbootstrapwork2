@@ -1,14 +1,30 @@
 import React from 'react';
+// Bootstrap CSS
+import "bootstrap/dist/css/bootstrap.min.css";
+// Bootstrap Bundle JS
+import "bootstrap/dist/js/bootstrap.bundle.min";
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import { Route, BrowserRouter as Router, Routes} from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+import Userpage from './components/Userpage';
+import Adminpage from './components/Adminpage';
+import NewPage from './components/NewPage';
+import BPage from './components/BPage';
+import Dashboard from './components/Dashboard';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <Router>
+  <Routes>
+    <Route path='/' element={<App/>}/>
+    <Route exact path="/Userpage" element={<Userpage/>}></Route>
+    <Route exact path='/Admin/Dashboard' element={<Adminpage navi={<Dashboard/>}/>}/>
+    <Route exact path='/Admin/NewPage' element={<Adminpage navi={<NewPage/>}/>}/>
+    <Route exact path='/Admin/NewPage/:pageId' element={<Adminpage navi={<BPage/>}/>}/>
+    </Routes>
+  </Router>
 );
 
 // If you want to start measuring performance in your app, pass a function
