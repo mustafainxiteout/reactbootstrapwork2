@@ -3,12 +3,18 @@ import { Button, Container, Form, Row, Col, Card} from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 
 
-function Login() {
+function Login({isAdmin}) {
     const navigate=useNavigate();
 
     const handleSubmit=()=>{
         localStorage.setItem('access_token', '12345678');
-        navigate('/Admin/Dashboard');
+        // determine if authorized based on isAdmin prop
+        if(isAdmin===true){
+          navigate('/Admin/Dashboard');
+        }
+        else{
+          navigate('/Userpage');
+        }
     }
   return (
     <section className="py-4 py-xl-5 googlesans">

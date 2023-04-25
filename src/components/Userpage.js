@@ -5,7 +5,7 @@ import Footercomponent from './Footercomponent'
 function Userpage() {
   return (
     <section  className='googlesans'>
-        <HeaderComponent/>
+        <HeaderComponent showsidebarbutton={false}/>
         <p className='m-5'>This is User Page.</p>
         <Footercomponent/>
     </section>

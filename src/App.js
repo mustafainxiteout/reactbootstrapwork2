@@ -1,9 +1,9 @@
 import React from 'react';
 import Login from './components/Login';
 
-function App() {
+function App({isAdmin}) {
   return (
-    <Login/>
+    <Login isAdmin={isAdmin}/>
   );
 }
 
