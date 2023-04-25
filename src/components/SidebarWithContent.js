@@ -47,7 +47,7 @@ function SidebarWithContent({navs,isButtonClicked}) {
   ]
 
 return (
-<Container fluid className={`${isButtonClicked===true? 'd-none d-sm-block':'d-block'}`} style={{transition:"width 3.0s ease-in-out"}}>
+<Container fluid className={`${isButtonClicked===true? 'd-none d-lg-block':'d-block'}`} style={{transition:"width 3.0s ease-in-out"}}>
 <Row>
 <Col className="col-auto bg-light shadow flex-shrink-0 d-flex border p-0" style={{width: "auto",minHeight:"92.5vh",transition:"width 0.3s ease-in-out"}}>
 <Nav variant='pills' className='flex-column text-start'>
