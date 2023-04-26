@@ -11,7 +11,7 @@ function Adminpage({navi}) {
 
   return (
     <section className='googlesans'>
-            <HeaderComponent onButtonClick={handleButtonClick} showsidebarbutton={true}/>
+            <HeaderComponent onButtonClick={handleButtonClick} isButtonClicked={isButtonClicked} showsidebarbutton={true}/>
             <SidebarWithContent navs={navi} isButtonClicked={isButtonClicked}/>
     </section>
   )
