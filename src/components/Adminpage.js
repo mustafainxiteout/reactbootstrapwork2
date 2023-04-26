@@ -3,7 +3,7 @@ import HeaderComponent from './HeaderComponent'
 import SidebarWithContent from './SidebarWithContent'
 
 function Adminpage({navi}) {
-  const [isButtonClicked, setIsButtonClicked] = useState(false);
+  const [isButtonClicked, setIsButtonClicked] = useState(true);
 
   const handleButtonClick = () => {
     setIsButtonClicked(!isButtonClicked);
