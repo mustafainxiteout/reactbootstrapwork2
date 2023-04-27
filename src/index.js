@@ -17,7 +17,7 @@ import PrivateRoute from './Privateroute';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const isAdmin = false;
+const isAdmin = true;
 root.render(
   <Router>
   <Routes>

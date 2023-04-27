@@ -6,7 +6,7 @@ function Userpage() {
   return (
     <section  className='googlesans'>
         <HeaderComponent showsidebarbutton={false}/>
-        <p className='m-5'>This is User Page.</p>
+        <p className='p-2' style={{marginTop:"80px"}}>This is User Page.</p>
         <Footercomponent/>
     </section>
   )
