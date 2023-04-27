@@ -47,7 +47,7 @@ const data=[
 
 function SidebarWithContent({navs,isButtonClicked}) {
   const location = useLocation();
-  const [activeLink, setActiveLink] = useState('');
+  const [activeLink, setActiveLink] = useState('/Admin/Dashboard');
   const navigate=useNavigate()
 
   // Create an array to hold the state of each dropdown item

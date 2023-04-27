@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Image, Navbar } from 'react-bootstrap'
-import { Bars3CenterLeftIcon,LanguageIcon, UserIcon, BellIcon, EnvelopeIcon} from '@heroicons/react/24/outline'
+import { Bars3CenterLeftIcon,LanguageIcon, BellIcon, EnvelopeIcon} from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom'
 
 function HeaderComponent({onButtonClick,showsidebarbutton,isButtonClicked}) {
@@ -44,8 +44,8 @@ function HeaderComponent({onButtonClick,showsidebarbutton,isButtonClicked}) {
                   <EnvelopeIcon className="text-black" style={{height:"18px",width:"18px"}}/>
                 </button>
                 <div className="dropdown-menu dropdown-menu-end mt-2">
-                  <button className="dropdown-item btn-light d-flex clearfix" onClick={navigationlinks} style={{width:"200px"}}>
-                    <p className='mb-0 float-start' style={{width:"150px"}}>John Wick commented on your post.</p>
+                  <button className="dropdown-item btn-light d-flex justify-content-between" onClick={navigationlinks} style={{width:"250px"}}>
+                    <p className='mb-0 text-wrap' style={{width:"150px"}}>John Wick commented on your post.</p>
                     <small className="text-muted float-end">12:57 PM</small>
                   </button>
                   <button className="dropdown-item btn-light" onClick={navigationlinks}>View Profile</button>
