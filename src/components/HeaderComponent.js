@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Image, Navbar } from 'react-bootstrap'
-import { Bars3CenterLeftIcon, UserIcon, BellIcon} from '@heroicons/react/24/outline'
+import { Bars3CenterLeftIcon, UserIcon, BellIcon, EnvelopeIcon} from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom'
 
 function HeaderComponent({onButtonClick,showsidebarbutton,isButtonClicked}) {
@@ -17,14 +17,19 @@ function HeaderComponent({onButtonClick,showsidebarbutton,isButtonClicked}) {
     <div>
         <Navbar bg="white" className='d-flex ml-auto p-3 border shadow-small justify-content-between'>
             <div>
+            {showsidebarbutton===true?(
+              <>
               <Image src={isButtonClicked===true? 'https://inxiteout.ai/wp-content/uploads/2021/08/logo-14.png':'/inxiteoutlogo.png'} className='d-none d-lg-inline' style={{height:isButtonClicked===true?"40px":"20px", width:isButtonClicked===true?"140px":"30px",marginRight:isButtonClicked===true?"90px":"30px",marginLeft:isButtonClicked===true?"10px":"2px"}}/>
               <Image src='/inxiteoutlogo.png' className={isButtonClicked===true?'d-none':'d-inline d-lg-none'} style={{height:isButtonClicked===true?"40px":"20px", width:isButtonClicked===true?"140px":"30px",marginRight:isButtonClicked===true?"90px":"30px",marginLeft:isButtonClicked===true?"10px":"2px"}}/>
-              {showsidebarbutton===true?(
               <Button className='btn btn-light text-bg-light border' onClick={onButtonClick}>
               <Bars3CenterLeftIcon  className="text-black" style={{height:"20px",width:"20px",transform: isButtonClicked===true?  'rotateZ(-180deg)' : null}} />
               </Button>
+              </>
               ):(
-              null
+              <>
+              <Image src='https://inxiteout.ai/wp-content/uploads/2021/08/logo-14.png' className='d-none d-lg-inline' style={{height:"40px", width:"140px",marginLeft:"10px"}}/>
+              <Image src='/inxiteoutlogo.png' className='d-inline d-lg-none' style={{height:"20px", width:"30px",marginRight:"30px",marginLeft:"2px"}}/>
+              </>
               )}
             </div>
               <div className='d-flex gap-2'>
@@ -33,7 +38,7 @@ function HeaderComponent({onButtonClick,showsidebarbutton,isButtonClicked}) {
                </Link>
                <div className="dropdown">
                 <button className="btn btn-light border text-center" aria-expanded="false" data-bs-toggle="dropdown" type="button">  
-                  <BellIcon className="text-black" style={{height:"20px",width:"20px"}}/>
+                  <EnvelopeIcon className="text-black" style={{height:"20px",width:"20px"}}/>
                 </button>
                 <div className="dropdown-menu dropdown-menu-end mt-2">
                   <button className="dropdown-item btn-light d-flex flex-wrap" onClick={navigationlinks} style={{width:"200px"}}>
