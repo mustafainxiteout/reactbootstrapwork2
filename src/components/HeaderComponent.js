@@ -15,11 +15,12 @@ function HeaderComponent({onButtonClick,showsidebarbutton,isButtonClicked}) {
   };
   return (
     <div>
-        <Navbar bg="white" className='d-flex ml-auto p-3 border shadow justify-content-between'>
+        <Navbar bg="white" className='d-flex ml-auto p-3 border shadow-small justify-content-between'>
             <div>
-              <Image src='https://inxiteout.ai/wp-content/uploads/2021/08/logo-14.png' style={{height:"40px", width:"100px"}}/>
+              <Image src={isButtonClicked===true? 'https://inxiteout.ai/wp-content/uploads/2021/08/logo-14.png':'/inxiteoutlogo.png'} className='d-none d-lg-inline' style={{height:isButtonClicked===true?"40px":"20px", width:isButtonClicked===true?"140px":"30px",marginRight:isButtonClicked===true?"90px":"30px",marginLeft:isButtonClicked===true?"10px":"2px"}}/>
+              <Image src='/inxiteoutlogo.png' className={isButtonClicked===true?'d-none':'d-inline d-lg-none'} style={{height:isButtonClicked===true?"40px":"20px", width:isButtonClicked===true?"140px":"30px",marginRight:isButtonClicked===true?"90px":"30px",marginLeft:isButtonClicked===true?"10px":"2px"}}/>
               {showsidebarbutton===true?(
-              <Button className='btn btn-light text-bg-light border' style={{marginLeft:"40px"}} onClick={onButtonClick}>
+              <Button className='btn btn-light text-bg-light border' onClick={onButtonClick}>
               <Bars3CenterLeftIcon  className="text-black" style={{height:"20px",width:"20px",transform: isButtonClicked===true?  'rotateZ(-180deg)' : null}} />
               </Button>
               ):(
