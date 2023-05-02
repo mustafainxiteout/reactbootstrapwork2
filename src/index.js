@@ -14,6 +14,7 @@ import NewPage from './components/NewPage';
 import BPage from './components/BPage';
 import Dashboard from './components/Dashboard';
 import PrivateRoute from './Privateroute';
+import Usecases from './components/Usecases';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -26,6 +27,7 @@ root.render(
     <Route exact path="/" element={<PrivateRoute/>}><Route exact path="/Admin/Dashboard" element={isAdmin ? <Adminpage navi={<Dashboard/>}/> : <Navigate to="/" />} isAdmin={isAdmin}/></Route>
     <Route exact path='/Admin/NewPage' element={<Adminpage navi={<NewPage/>}/>}/>
     <Route exact path='/Admin/NewPage/:pageId' element={<Adminpage navi={<BPage/>}/>}/>
+    <Route exact path='/Admin/Usecases' element={<Adminpage navi={<Usecases/>}/>}/>
     </Routes>
   </Router>
 );
