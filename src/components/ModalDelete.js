@@ -10,7 +10,7 @@ function ModalDelete({showModal,handleClose,id,status}) {
       };
     const handleDeleteTemporary = () => {
         axios
-          .put(`http://127.0.0.1:8000/usecases/${id}`, {
+          .put(`/usecases/${id}`, {
             status: false,
           })
           .then((response) => {

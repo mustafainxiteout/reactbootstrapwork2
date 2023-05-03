@@ -11,6 +11,7 @@ function HeaderComponent({onButtonClick,showsidebarbutton,isButtonClicked}) {
   const handleLogout = () => {
     // remove access token from local storage
     localStorage.removeItem("access_token");
+    sessionStorage.removeItem("access_token");
     navigate('/');
   };
   return (

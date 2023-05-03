@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Container, Form, Row, Col, Card} from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 
 
 function Login({isAdmin}) {
+    const [rememberme,setRememberme]=useState(false);
     const navigate=useNavigate();
+  
 
     const handleSubmit=()=>{
-        localStorage.setItem('access_token', '12345678');
+        if(rememberme===true){
+          localStorage.setItem('access_token', '12345678');
+        }
+        else{
+          sessionStorage.setItem('access_token', '12345678');
+        }
         // determine if authorized based on isAdmin prop
         if(isAdmin===true){
           navigate('/Admin/Dashboard');
@@ -35,6 +42,10 @@ function Login({isAdmin}) {
             <Form className="text-center" onSubmit={handleSubmit}>
               <div className="mb-3"><input className="form-control" type="email" name="email" placeholder="Email" style={{boxShadow: '0px 0px'}} /></div>
               <div className="mb-3"><input className="form-control" type="password" name="password" placeholder="Password" style={{boxShadow: '0px 0px'}} /></div>
+              <div className="mb-3 form-check d-flex gap-2">
+                <input type="checkbox" className="form-check-input" id="exampleCheck1" style={{boxShadow: '0px 0px'}} checked={rememberme} onChange={(e) => setRememberme(e.target.checked)}/>
+                <label className="form-check-label" htmlFor="exampleCheck1">Remember Me</label>
+              </div>
               <div className="mb-3"><Button className="btn btn-primary d-block w-100" type="submit">Login</Button></div>
               <p className="text-muted">Forgot your password?</p>
             </Form>
