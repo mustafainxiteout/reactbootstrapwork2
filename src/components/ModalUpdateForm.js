@@ -21,7 +21,7 @@ function ModalUpdateForm({showModal,handleClose,id}) {
 
       useEffect(() => {
         axios
-          .get(`http://127.0.0.1:8000/usecases/${id}`)
+          .get(`/usecases/${id}`)
           .then((response) => {
             const data=response.data[0];
             setFormData({
@@ -63,7 +63,7 @@ function ModalUpdateForm({showModal,handleClose,id}) {
     
       const handleSubmit = (event) => {
         event.preventDefault();
-        axios.put(`http://127.0.0.1:8000/usecases/${id}`, formData)
+        axios.put(`/usecases/${id}`, formData)
           .then((response) => {
             handleClose();
             setTimeout(() => {

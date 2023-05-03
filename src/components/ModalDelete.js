@@ -25,7 +25,7 @@ function ModalDelete({showModal,handleClose,id,status}) {
           });
       };
     const handleDeletePermanently = () => {
-        axios.delete(`http://127.0.0.1:8000/usecases/${id}`)
+        axios.delete(`/usecases/${id}`)
           .then(response => {
             navigate('/Admin/Usecases');
             setTimeout(() => {

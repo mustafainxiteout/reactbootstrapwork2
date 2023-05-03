@@ -40,7 +40,7 @@ function ModalForm({showModal,handleClose}) {
     
       const handleSubmit = (event) => {
         event.preventDefault();
-        axios.post('http://127.0.0.1:8000/usecases', formData)
+        axios.post('/usecases', formData)
           .then((response) => {
             handleClose(); 
             window.location.reload(); // Reload the page after submitting and closing the modal 

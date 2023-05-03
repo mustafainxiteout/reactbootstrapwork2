@@ -9,7 +9,7 @@ function ModalView({showModal,handleClose,id}) {
   };
 
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/usecases/${id}`)
+    axios.get(`/usecases/${id}`)
       .then(response => setUsecasesid(response.data))
       .catch(error => console.log(error));
   }, [id]);

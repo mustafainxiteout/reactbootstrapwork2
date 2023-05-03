@@ -15,3 +15,23 @@ code {
 }
 
 .googlesans { font-family: 'Google Sans', sans-serif; }
+
+.page-link{
+  background-color: #fff;
+  border-color: lightgrey;
+  color: black;
+  box-shadow: none;
+}
+
+.page-link:hover,
+.page-link:focus {
+  border-color: lightgray;
+  box-shadow: none;
+}
+
+.tds {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 780px; /* adjust the value as needed */
+}

@@ -15,7 +15,7 @@ function ModalStatus({showModal,handleClose,id,status}) {
     const handleStatus = (event) => {
         event.preventDefault();
         axios
-          .put(`http://127.0.0.1:8000/usecases/${id}`, {
+          .put(`/usecases/${id}`, {
             status: activestate,
           })
           .then((response) => {
