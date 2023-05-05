@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom'
 
 function HeaderComponent({onButtonClick,showsidebarbutton,isButtonClicked}) {
   const navigate=useNavigate();
-  const navigationlinks = () => {
-      navigate('/Admin/Newpage/5');
+  const navigationlinks = (link) => {
+      navigate(link);
   };
   const handleLogout = () => {
     // remove access token from local storage
@@ -39,13 +39,13 @@ function HeaderComponent({onButtonClick,showsidebarbutton,isButtonClicked}) {
                   <LanguageIcon className="text-black" style={{height:"18px",width:"18px"}}/>
                 </button>
                 <div className="dropdown-menu dropdown-menu-start dropdown-menu-lg-end border-0 shadow-lg mt-2 p-0">
-                  <button className="dropdown-item small btn-light my-btn border-bottom py-3" onClick={navigationlinks}>
+                  <button className="dropdown-item small btn-light my-btn border-bottom py-3" onClick={()=>navigationlinks('/Admin/Newpage/5')}>
                     English (UK)
                   </button>
-                  <button className="dropdown-item small btn-light my-btn border-bottom py-3" onClick={navigationlinks}>
+                  <button className="dropdown-item small btn-light my-btn border-bottom py-3" onClick={()=>navigationlinks('/Admin/Newpage/5')}>
                     French (France)
                   </button>
-                  <button className="dropdown-item small btn-light my-btn py-3" onClick={navigationlinks}>
+                  <button className="dropdown-item small btn-light my-btn py-3" onClick={()=>navigationlinks('/Admin/Newpage/5')}>
                     Chinese (China)
                   </button>
                 </div>
@@ -55,22 +55,22 @@ function HeaderComponent({onButtonClick,showsidebarbutton,isButtonClicked}) {
                   <BellIcon className="text-black" style={{height:"18px",width:"18px"}}/>
                 </button>
                 <div className="dropdown-menu dropdown-menu-end border-0 shadow-lg mt-2 p-0" style={{width:"250px"}}>
-                  <p className="dropdown-item mb-0 text-start border-bottom py-3 disabled text-black" onClick={navigationlinks}>
+                  <p className="dropdown-item mb-0 text-start border-bottom py-3 disabled text-black" onClick={()=>navigationlinks('/Admin/Newpage/5')}>
                     Notifications
                   </p>
-                  <button className="dropdown-item btn-light small d-flex justify-content-between border-bottom py-3" onClick={navigationlinks}>
+                  <button className="dropdown-item btn-light small d-flex justify-content-between border-bottom py-3" onClick={()=>navigationlinks('/Admin/Newpage/5')}>
                     <p className='mb-0 text-wrap'>John Wick commented on your post.</p>
                     <small className="text-muted float-end">12:57 PM</small>
                   </button>
-                  <button className="dropdown-item btn-light small d-flex justify-content-between border-bottom py-3" onClick={navigationlinks}>
+                  <button className="dropdown-item btn-light small d-flex justify-content-between border-bottom py-3" onClick={()=>navigationlinks('/Admin/Newpage/5')}>
                     <p className='mb-0 text-wrap'>John Wick commented on your post.</p>
                     <small className="text-muted float-end">12:57 PM</small>
                   </button>
-                  <button className="dropdown-item btn-light small d-flex justify-content-between border-bottom py-3" onClick={navigationlinks}>
+                  <button className="dropdown-item btn-light small d-flex justify-content-between border-bottom py-3" onClick={()=>navigationlinks('/Admin/Newpage/5')}>
                     <p className='mb-0 text-wrap'>John Wick commented on your post.</p>
                     <small className="text-muted float-end">12:57 PM</small>
                   </button>
-                  <button className="dropdown-item btn-light my-btn text-center py-3" onClick={navigationlinks}>
+                  <button className="dropdown-item btn-light my-btn text-center py-3" onClick={()=>navigationlinks('/Admin/Newpage/5')}>
                     <p className='my-0 text-primary'>View All</p>
                   </button>
                 </div>
@@ -80,22 +80,22 @@ function HeaderComponent({onButtonClick,showsidebarbutton,isButtonClicked}) {
                   <EnvelopeIcon className="text-black" style={{height:"18px",width:"18px"}}/>
                 </button>
                 <div className="dropdown-menu dropdown-menu-end border-0 shadow-lg mt-2 p-0" style={{width:"250px"}}>
-                  <p className="dropdown-item mb-0 text-start border-bottom py-3 disabled text-black" onClick={navigationlinks}>
+                  <p className="dropdown-item mb-0 text-start border-bottom py-3 disabled text-black" onClick={()=>navigationlinks('/Admin/Newpage/5')}>
                     Messages
                   </p>
-                  <button className="dropdown-item btn-light small d-flex justify-content-between border-bottom py-3" onClick={navigationlinks}>
+                  <button className="dropdown-item btn-light small d-flex justify-content-between border-bottom py-3" onClick={()=>navigationlinks('/Admin/Newpage/5')}>
                     <p className='mb-0 text-wrap'>John Wick commented on your post.</p>
                     <small className="text-muted float-end">12:57 PM</small>
                   </button>
-                  <button className="dropdown-item btn-light small d-flex justify-content-between border-bottom py-3" onClick={navigationlinks}>
+                  <button className="dropdown-item btn-light small d-flex justify-content-between border-bottom py-3" onClick={()=>navigationlinks('/Admin/Newpage/5')}>
                     <p className='mb-0 text-wrap'>John Wick commented on your post.</p>
                     <small className="text-muted float-end">12:57 PM</small>
                   </button>
-                  <button className="dropdown-item btn-light small d-flex justify-content-between border-bottom py-3" onClick={navigationlinks}>
+                  <button className="dropdown-item btn-light small d-flex justify-content-between border-bottom py-3" onClick={()=>navigationlinks('/Admin/Newpage/5')}>
                     <p className='mb-0 text-wrap'>John Wick commented on your post.</p>
                     <small className="text-muted float-end">12:57 PM</small>
                   </button>
-                  <button className="dropdown-item btn-light my-btn text-center py-3" onClick={navigationlinks}>
+                  <button className="dropdown-item btn-light my-btn text-center py-3" onClick={()=>navigationlinks('/Admin/Newpage/5')}>
                     <p className='my-0 text-primary'>View All</p>
                   </button>
                 </div>
@@ -106,11 +106,11 @@ function HeaderComponent({onButtonClick,showsidebarbutton,isButtonClicked}) {
                   <span className='d-none d-lg-inline fw-bold'>Mustafa</span>
                 </button>
                 <div className="dropdown-menu dropdown-menu-end shadow-lg border-0 p-0 mt-2">
-                <button className="dropdown-item small btn-light py-3" onClick={navigationlinks}>
+                <button className="dropdown-item small btn-light py-3" onClick={()=>navigationlinks('/Admin/Newpage/5')}>
                   <PencilSquareIcon className="text-black me-2" style={{height:"20px",width:"20px"}}/>
                   Edit Profile
                 </button>
-                <button className="dropdown-item small btn-light py-3" onClick={navigationlinks}>
+                <button className="dropdown-item small btn-light py-3" onClick={()=>navigationlinks('/ViewProfile')}>
                   <UserIcon className="text-black me-2" style={{height:"20px",width:"20px"}}/>
                   View Profile
                 </button>

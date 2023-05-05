@@ -33,5 +33,14 @@ code {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 780px; /* adjust the value as needed */
+  width: 40vw; /* adjust the value as needed */
+}
+
+.my-tab-btn {
+  border: none;
+  border-bottom: 3px solid transparent;
+}
+
+.my-tab-btn:hover {
+  background-color: #0d6efd1A;
 }

@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { Button,Form,Modal } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-function ModalStatus({showModal,handleClose,id,status}) {
+function ModalStatus({showModal,handleClose,id,status,usecasesget}) {
+    // Get the access token from wherever it is stored (e.g. local storage, Redux store, etc.)
+    const localaccessToken = localStorage.getItem('access_token');
+    const sessionaccessToken = sessionStorage.getItem('access_token');
+    const token = localaccessToken || sessionaccessToken;
     const [activestate,setActivestate]=useState();
     useEffect(()=>{
         setActivestate(status);
     },[status]);
-    const navigate=useNavigate();
     const handleButtonClick = () => {
         handleClose();
       };
@@ -16,13 +18,15 @@ function ModalStatus({showModal,handleClose,id,status}) {
         event.preventDefault();
         axios
           .put(`/usecases/${id}`, {
-            status: activestate,
-          })
-          .then((response) => {
+            status: activestate
+          },{
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }).then((response) => {
             handleClose();
-            navigate('/Admin/Usecases');
             setTimeout(() => {
-                window.location.reload(); // Reload the page after submitting and closing the modal
+                usecasesget(); // Reload the page after submitting and closing the modal
               }, 1000);
           })
           .catch((error) => {
@@ -31,22 +35,22 @@ function ModalStatus({showModal,handleClose,id,status}) {
       };
 
   return (
-    <Modal size='sm' centered show={showModal} onHide={handleButtonClick} closebutton={<Button className='btn-close' aria-label="Close">close</Button>}>
+    <Modal size='sm' centered show={showModal} onHide={handleButtonClick}>
         <Modal.Header closeButton>
           <Modal.Title>Update Status</Modal.Title>
         </Modal.Header>
         <Modal.Body>
             <Form>
                 <div className='d-flex gap-4'>
-        <div class="form-check">
-  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="true" checked={activestate===true} onChange={()=>setActivestate(true)}/>
-  <label class="form-check-label" for="exampleRadios1">
+        <div className="form-check">
+  <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="true" checked={activestate===true} onChange={()=>setActivestate(true)}/>
+  <label className="form-check-label" htmlFor="exampleRadios1">
     Active
   </label>
 </div>
-<div class="form-check">
-  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="false" checked={activestate===false} onChange={()=>setActivestate(false)}/>
-  <label class="form-check-label" for="exampleRadios2">
+<div className="form-check">
+  <input className="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="false" checked={activestate===false} onChange={()=>setActivestate(false)}/>
+  <label className="form-check-label" htmlFor="exampleRadios2">
     Inactive
   </label>
 </div>

@@ -15,6 +15,8 @@ import BPage from './components/BPage';
 import Dashboard from './components/Dashboard';
 import PrivateRoute from './Privateroute';
 import Usecases from './components/Usecases';
+import UserContent from './components/UserContent';
+import Forgotpassword from './components/Forgotpassword';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -23,11 +25,13 @@ root.render(
   <Router>
   <Routes>
     <Route path='/' element={<App isAdmin={isAdmin}/>}/>
-    <Route exact path="/" element={<PrivateRoute/>}><Route exact path="/Userpage" element={isAdmin ?  <Navigate to="/" />: <Userpage/>} isAdmin={isAdmin}/></Route>
+    <Route exact path='/ForgotPasswword' element={<Forgotpassword/>}/>
+    <Route exact path="/" element={<PrivateRoute/>}><Route exact path="/Userpage" element={isAdmin ?  <Navigate to="/" />: <Userpage contentarea={<p>hi user</p>}/>} isAdmin={isAdmin}/></Route>
     <Route exact path="/" element={<PrivateRoute/>}><Route exact path="/Admin/Dashboard" element={isAdmin ? <Adminpage navi={<Dashboard/>}/> : <Navigate to="/" />} isAdmin={isAdmin}/></Route>
     <Route exact path='/Admin/NewPage' element={<Adminpage navi={<NewPage/>}/>}/>
     <Route exact path='/Admin/NewPage/:pageId' element={<Adminpage navi={<BPage/>}/>}/>
     <Route exact path='/Admin/Usecases' element={<Adminpage navi={<Usecases/>}/>}/>
+    <Route exact path='/ViewProfile' element={isAdmin ? <Adminpage navi={<UserContent/>}/> : <Userpage contentarea={<UserContent/>}/>} isAdmin={isAdmin}/>
     </Routes>
   </Router>
 );

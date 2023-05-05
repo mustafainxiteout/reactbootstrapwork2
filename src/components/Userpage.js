@@ -2,11 +2,13 @@ import React from 'react'
 import HeaderComponent from './HeaderComponent'
 import Footercomponent from './Footercomponent'
 
-function Userpage() {
+function Userpage({contentarea}) {
   return (
     <section  className='googlesans'>
         <HeaderComponent showsidebarbutton={false}/>
-        <p className='p-2' style={{marginTop:"80px"}}>This is User Page.</p>
+        <div style={{marginTop:"70px"}}>
+        {contentarea}
+        </div>
         <Footercomponent/>
     </section>
   )

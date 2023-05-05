@@ -11,11 +11,36 @@ import ModalStatus from './ModalStatus';
 function Usecases() {
   const [usecases, setUsecases] = useState([]);
   const [status,setStatus]=useState(false);
-  useEffect(() => {
+  const [activePage, setActivePage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [totalPages,setTotalPages]=useState('')
+
+  
+
+  const handlePageChange = (pageNumber) => {
+    setActivePage(pageNumber);
+  }
+
+  const handleItemsPerPageChange = (e) => {
+    setItemsPerPage(parseInt(e.target.value));
+    setActivePage(1); // Reset the active page to 1 when changing the number of items per page
+  }
+
+  const startIndex = (activePage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  const currentUseCases = usecases.slice(startIndex, endIndex);
+
+  const getusecases=()=>{
     axios.get('/usecases')
       .then(response => setUsecases(response.data))
       .catch(error => console.log(error));
-  }, []);
+  }
+  
+  useEffect(() => {
+    getusecases();
+    setTotalPages(Math.ceil(usecases.length / itemsPerPage));
+  }, [itemsPerPage,usecases.length]);
 
   const [showModalForm, setShowModalForm] = useState(false);
   const handleClose = () => setShowModalForm(false);
@@ -52,25 +77,6 @@ function Usecases() {
     setStatus(status);
   }
 
-  const [activePage, setActivePage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
-
-  const totalPages = Math.ceil(usecases.length / itemsPerPage);
-
-  const handlePageChange = (pageNumber) => {
-    setActivePage(pageNumber);
-  }
-
-  const handleItemsPerPageChange = (e) => {
-    setItemsPerPage(parseInt(e.target.value));
-    setActivePage(1); // Reset the active page to 1 when changing the number of items per page
-  }
-
-  const startIndex = (activePage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-
-  const currentUseCases = usecases.slice(startIndex, endIndex);
-
   return (
     <div className="container-fluid p-4">
   <div className="row">
@@ -78,17 +84,27 @@ function Usecases() {
       <h3 className="text-dark mb-4">Usecases</h3>
     </div>
   </div>
-  <ModalForm showModal={showModalForm} handleClose={handleClose} />
-  {id!==''?(
-    <>
+
+{showModalForm && (
+  <ModalForm showModal={showModalForm} handleClose={handleClose}  usecasesget={getusecases}/>
+)}
+
+{showModalView && (
   <ModalView showModal={showModalView} handleClose={handleCloseView} id={id} />
-  <ModalUpdateForm showModal={showModalUpdate} handleClose={handleCloseUpdate} id={id} />
-  <ModalDelete showModal={showModalDelete} handleClose={handleCloseDelete} id={id} status={status}/>
-  <ModalStatus showModal={showModalStatus} handleClose={handleCloseStatus} id={id} status={status}/>
-  </>
-  ):(
-    null
-  )}
+)}
+
+{showModalUpdate && (
+  <ModalUpdateForm showModal={showModalUpdate} handleClose={handleCloseUpdate} id={id} usecasesget={getusecases} />
+)}
+
+{showModalDelete && (
+  <ModalDelete showModal={showModalDelete} handleClose={handleCloseDelete} id={id} status={status} usecasesget={getusecases} />
+)}
+
+{showModalStatus && (
+  <ModalStatus showModal={showModalStatus} handleClose={handleCloseStatus} id={id} status={status} usecasesget={getusecases} />
+)}
+
   <div className="card">
     <div className="card-header bg-white py-3 ">
       <div className="row justify-content-between">
@@ -113,7 +129,7 @@ function Usecases() {
               <tr>
                 <th className="text-start px-4 py-4">Name</th>
                 <th className="text-start py-4">Heading</th>
-                <th className='text-start py-4 d-none d-lg-block tds'>Description</th>
+                <th className='text-start py-4 d-none d-lg-block'>Description</th>
                 <th className="text-start px-4 py-4">Status</th>
                 <th className="text-center py-4">Actions</th>
               </tr>
@@ -123,9 +139,9 @@ function Usecases() {
               <tr key={usecase.ucid}>
                 <td className='px-4 py-4'>{usecase.usecase_name}</td>
                 <td className='py-4'>{usecase.heading}</td>
-                <td className='py-4 d-none d-lg-block tds' title={usecase.usecase_desc}>{usecase.usecase_desc}</td>
+                <td className='py-4 d-none d-lg-block'><p className='tds' title={usecase.usecase_desc}>{usecase.usecase_desc}</p></td>
                 <td style={{paddingTop:"34px"}} className='px-4'><small role='button' onClick={()=>handleShowStatus(usecase.ucid,usecase.status)} className={`${usecase.status===true?'rounded-5 bg-success text-white d-inline px-2 py-1':'rounded-5 bg-danger text-white d-inline px-2 py-1'}`}>{usecase.status===true?'Active':'Inactive'}</small></td>
-                <td className="text-center align-middle" style={{width:"160px",height:"60px"}}><button onClick={()=>handleShowView(usecase.ucid)} className='btn'><EyeIcon style={{height:"18px",width:"18px"}} /></button><button className='btn' onClick={()=>handleShowUpdate(usecase.ucid)}><PencilSquareIcon style={{height:"18px",width:"18px"}} /></button><button className='btn' onClick={()=>handleShowDelete(usecase.ucid,usecase.status)}><TrashIcon style={{height:"18px",width:"18px",color: '#DC3545'}} /></button></td>
+                <td className="text-center align-middle" style={{width:"160px"}}><button onClick={()=>handleShowView(usecase.ucid)} className='btn'><EyeIcon style={{height:"18px",width:"18px"}} /></button><button className='btn' onClick={()=>handleShowUpdate(usecase.ucid)}><PencilSquareIcon style={{height:"18px",width:"18px"}} /></button><button className='btn' onClick={()=>handleShowDelete(usecase.ucid,usecase.status)}><TrashIcon style={{height:"18px",width:"18px",color: '#DC3545'}} /></button></td>
               </tr>
             ))}
             </tbody>

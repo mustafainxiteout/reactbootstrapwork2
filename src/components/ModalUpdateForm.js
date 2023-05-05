@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 
-function ModalUpdateForm({showModal,handleClose,id}) {
+function ModalUpdateForm({showModal,handleClose,id,usecasesget}) {
+    // Get the access token from wherever it is stored (e.g. local storage, Redux store, etc.)
+    const localaccessToken = localStorage.getItem('access_token');
+    const sessionaccessToken = sessionStorage.getItem('access_token');
+    const token = localaccessToken || sessionaccessToken;
     const [formData, setFormData] = useState({
         usecase_name: '',
         heading: '',
@@ -63,11 +67,14 @@ function ModalUpdateForm({showModal,handleClose,id}) {
     
       const handleSubmit = (event) => {
         event.preventDefault();
-        axios.put(`/usecases/${id}`, formData)
-          .then((response) => {
+        axios.put(`/usecases/${id}`, formData,{
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }).then((response) => {
             handleClose();
             setTimeout(() => {
-                window.location.reload(); // Reload the page after submitting and closing the modal
+              usecasesget(); // Reload the page after submitting and closing the modal
               }, 1000);
           })
           .catch((error) => {
@@ -76,7 +83,7 @@ function ModalUpdateForm({showModal,handleClose,id}) {
       };
 
   return (
-    <Modal size='lg' centered show={showModal} onHide={handleButtonClick} closebutton={<Button className='btn-close' aria-label="Close">close</Button>}>
+    <Modal size='lg' centered show={showModal} onHide={handleButtonClick}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Usecase</Modal.Title>
         </Modal.Header>
