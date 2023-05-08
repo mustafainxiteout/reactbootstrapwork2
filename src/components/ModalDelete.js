@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button,Modal } from 'react-bootstrap';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function ModalDelete({showModal,handleClose,id,status,usecasesget}) {
     // Get the access token from wherever it is stored (e.g. local storage, Redux store, etc.)
@@ -21,11 +22,12 @@ function ModalDelete({showModal,handleClose,id,status,usecasesget}) {
           }).then((response) => {
             handleClose();
             setTimeout(() => {
-              usecasesget(); 
+              usecasesget("Deactivated Successfully!",toast.TYPE.SUCCESS); 
               }, 1000);
           })
           .catch((error) => {
-            console.log(error);
+            handleClose();
+            usecasesget("Error Occured!",toast.TYPE.ERROR); // Reload the page after submitting and closing the modal 
           });
       };
     const handleDeletePermanently = () => {
@@ -36,11 +38,12 @@ function ModalDelete({showModal,handleClose,id,status,usecasesget}) {
         }).then(response => {
             handleClose();
             setTimeout(() => {
-              usecasesget(); 
+              usecasesget("Deleted Successfully!",toast.TYPE.SUCCESS); 
               }, 1000);
           })
           .catch(error => {
-            console.error(error);
+            handleClose();
+            usecasesget("Error Occured!",toast.TYPE.ERROR); // Reload the page after submitting and closing the modal 
           });
       };
   return (

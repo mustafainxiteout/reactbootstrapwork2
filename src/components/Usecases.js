@@ -7,6 +7,8 @@ import ModalView from './ModalView';
 import ModalUpdateForm from './ModalUpdateForm';
 import ModalDelete from './ModalDelete';
 import ModalStatus from './ModalStatus';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Usecases() {
   const [usecases, setUsecases] = useState([]);
@@ -31,7 +33,10 @@ function Usecases() {
 
   const currentUseCases = usecases.slice(startIndex, endIndex);
 
-  const getusecases=()=>{
+  const getusecases=(toastmsg, toasttype)=>{
+    if (toastmsg && toasttype) {
+      toast(toastmsg,{type: toasttype});
+    }
     axios.get('/usecases')
       .then(response => setUsecases(response.data))
       .catch(error => console.log(error));
@@ -84,6 +89,16 @@ function Usecases() {
       <h3 className="text-dark mb-4">Usecases</h3>
     </div>
   </div>
+  <ToastContainer position="bottom-left"
+autoClose={5000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="light" />
 
 {showModalForm && (
   <ModalForm showModal={showModalForm} handleClose={handleClose}  usecasesget={getusecases}/>

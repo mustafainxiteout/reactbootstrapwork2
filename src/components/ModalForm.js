@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function ModalForm({showModal,handleClose,usecasesget}) {
   // Get the access token from wherever it is stored (e.g. local storage, Redux store, etc.)
@@ -43,11 +44,13 @@ function ModalForm({showModal,handleClose,usecasesget}) {
       };      
     
       const handleSubmit = (event) => {
+        event.preventDefault();
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
-          event.preventDefault();
           event.stopPropagation();
+          setValidated(true);
         }
+        else{
         setValidated(true);
         axios.post('/usecases', formData,{
           headers: {
@@ -55,11 +58,13 @@ function ModalForm({showModal,handleClose,usecasesget}) {
           }
         }).then((response) => {
             handleClose(); 
-            usecasesget(); // Reload the page after submitting and closing the modal 
+            usecasesget("Created Successfully!",toast.TYPE.SUCCESS); // Reload the page after submitting and closing the modal 
           })
           .catch((error) => {
-            console.log(error);
+            handleClose();
+            usecasesget(error.response.data.message,toast.TYPE.ERROR); // Reload the page after submitting and closing the modal 
           });
+        }
       };
 
   return (
@@ -71,7 +76,7 @@ function ModalForm({showModal,handleClose,usecasesget}) {
         <Form noValidate validated={validated} className="text-start" onSubmit={handleSubmit}>
           <div className='d-flex gap-3'>
           <Form.Group controlId="validationCustom01" className="mb-3 w-50">
-          <Form.Control required type="text" name="usecase_name" placeholder="Enter usecase name" pattern="^\S*$" value={formData.usecase_name} onChange={handleInputChange} style={{boxShadow: '0px 0px'}}/>
+          <Form.Control required type="text" className='text-uppercase' name="usecase_name" placeholder="Enter usecase name" pattern="^\S*$" value={formData.usecase_name} onChange={handleInputChange} style={{boxShadow: '0px 0px'}}/>
           <Form.Control.Feedback type='invalid'>Please do not use spaces and provide only one word</Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="validationCustom02" className="mb-3 w-50">

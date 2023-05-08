@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button,Form,Modal } from 'react-bootstrap';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function ModalStatus({showModal,handleClose,id,status,usecasesget}) {
     // Get the access token from wherever it is stored (e.g. local storage, Redux store, etc.)
@@ -26,11 +27,12 @@ function ModalStatus({showModal,handleClose,id,status,usecasesget}) {
           }).then((response) => {
             handleClose();
             setTimeout(() => {
-                usecasesget(); // Reload the page after submitting and closing the modal
+                usecasesget("Status Updated!",toast.TYPE.SUCCESS); // Reload the page after submitting and closing the modal
               }, 1000);
           })
           .catch((error) => {
-            console.log(error);
+            handleClose();
+            usecasesget("Error Occured!",toast.TYPE.ERROR); // Reload the page after submitting and closing the modal 
           });
       };
 
