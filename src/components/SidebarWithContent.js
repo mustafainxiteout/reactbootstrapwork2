@@ -94,7 +94,7 @@ function SidebarWithContent({navs,isButtonClicked}) {
 return (
 <Container fluid style={{transition:"width 3.0s ease-in-out",marginTop:isButtonClicked===true?"73px":"70px"}} className='position-fixed'>
 <Row>
-<Col className={`${isButtonClicked===true? 'd-none d-lg-block col-auto bg-white shadow-small flex-shrink-0 d-flex border p-0':'d-block col-auto bg-white shadow-small flex-shrink-0 d-flex border p-0'}`} style={{width: "auto",minHeight:"92.5vh",transition:"width 0.3s ease-in-out"}}>
+<Col className={`${isButtonClicked===true? 'd-none d-lg-block col-auto bg-white shadow-small flex-shrink-0 d-flex border-end p-0':'d-block col-auto bg-white shadow-small flex-shrink-0 d-flex border-end p-0'}`} style={{width: "auto",minHeight:"92.5vh",transition:"width 0.3s ease-in-out"}}>
 <Nav variant='pills' className='flex-column text-start'>
 {data.map((item,index)=>( 
 <NavItem key={item.pagename}>

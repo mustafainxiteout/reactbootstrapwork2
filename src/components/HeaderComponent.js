@@ -1,13 +1,21 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { Button, Image, Navbar } from 'react-bootstrap'
 import { Bars3CenterLeftIcon,LanguageIcon, BellIcon, EnvelopeIcon, PencilSquareIcon,UserIcon,PowerIcon} from '@heroicons/react/24/outline'
 import { useNavigate } from 'react-router-dom'
+import { getpic } from './pictureAPI'
 
 function HeaderComponent({onButtonClick,showsidebarbutton,isButtonClicked}) {
   const navigate=useNavigate();
   const navigationlinks = (link) => {
       navigate(link);
   };
+
+  const [imageUrl, setImageUrl] = useState('');
+
+  useEffect(()=>{
+    getpic().then((url) => setImageUrl(url));
+  },[]);
+
   const handleLogout = () => {
     // remove access token from local storage
     localStorage.removeItem("access_token");
@@ -16,7 +24,7 @@ function HeaderComponent({onButtonClick,showsidebarbutton,isButtonClicked}) {
   };
   return (
     <div>
-        <Navbar bg="white" className='d-flex ml-auto p-3 border shadow-small justify-content-between fixed-top'>
+        <Navbar bg="white" className='d-flex ml-auto p-3 border-bottom shadow-small justify-content-between fixed-top'>
             <div>
             {showsidebarbutton===true?(
               <>
@@ -102,8 +110,9 @@ function HeaderComponent({onButtonClick,showsidebarbutton,isButtonClicked}) {
               </div>
               <div className="dropdown">
                 <button className="btn text-center border-0" aria-expanded="false" data-bs-toggle="dropdown" type="button">
-                  <Image src='/avatar.jpg' className='rounded-5 p-0 me-0 me-lg-1' style={{height:"22px", width:"22px"}}/>
-                  <span className='d-none d-lg-inline fw-bold'>Mustafa</span>
+                {!imageUrl && <Image src='./avatar.jpg' alt='default' className='rounded-5 p-0 me-0 me-lg-1' style={{height:"22px", width:"22px"}}/>}
+                {imageUrl && <Image src={imageUrl} alt="Profile" className='rounded-5 p-0 me-0 me-lg-1' style={{height:"22px", width:"22px"}} />}
+                <span className='d-none d-lg-inline fw-bold'>Mustafa</span>
                 </button>
                 <div className="dropdown-menu dropdown-menu-end shadow-lg border-0 p-0 mt-2">
                 <button className="dropdown-item small btn-light py-3" onClick={()=>navigationlinks('/Admin/Newpage/5')}>
