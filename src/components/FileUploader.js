@@ -134,7 +134,7 @@ function FileUploader() {
       <aside>
           {files.map(file => (
             <p className='border py-3 mx-3 rounded-3 bg-light' key={file.path}>
-              {file.path} - {convertBytesToMB(file.size)} bytes
+              {file.path} - {convertBytesToMB(file.size)} MB
             </p>
           ))}
       </aside>
