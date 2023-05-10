@@ -25,7 +25,7 @@ function ModalView({showModal,handleClose,id}) {
   };
 
   const formattedDate =(dateStr)=>{
-    return new Date(dateStr.replace('T', ' ')).toLocaleString('en-US', options).replace(/\//g, '-').replace(',', '  ');
+    return new Date(dateStr.replace('T', ' ')).toLocaleString('en-GB', options).replace(/\//g, '-').replace(',', '  ');
   };
   
   return (

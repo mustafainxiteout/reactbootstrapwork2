@@ -1,6 +1,6 @@
 import { useState,useRef,useEffect } from 'react';
 import { Button, Image } from 'react-bootstrap';
-import { PhotoIcon } from '@heroicons/react/24/outline'
+import { PhotoIcon, PencilIcon } from '@heroicons/react/24/outline'
 import AvatarEditor from 'react-avatar-editor';
 import axios from 'axios';
 import { getpic } from './pictureAPI';
@@ -91,12 +91,11 @@ draggable
 pauseOnHover
 theme="light" />
       <div className='d-flex'>
-        <button className='border-0 btn p-0' type="button" onClick={handleButtonClick}>
           {!image && !imageUrl && <Image src='./avatar.jpg' className='rounded-circle' width={250} height={250} alt="Default Pic"/>}
           {!image && imageUrl && <Image src={imageUrl} alt="Profile" className='rounded-circle' width={250} height={250} />}
           {image && editor }
           {/* <Image src={URL.createObjectURL(image)} className='w-50 h-50 rounded-3' alt="Preview" /> */}
-        </button>
+        
         {image && <input type="range" min="1" max="3" step="0.01" value={scale} onChange={handleScaleChange} style={{ transform: "rotate(-90deg)" }}/>}
         <input
           type="file"
@@ -106,11 +105,14 @@ theme="light" />
           onChange={handleImageChange}
         />
       </div>
-      <div className='d-flex'>
-      <Button className='mt-3 rounded-3' type="submit">
+      <div className='d-flex gap-3 mt-3 '>
+      <Button className='rounded-3' type="submit">
       <PhotoIcon className='me-1' style={{height:"20px",width:"20px"}}/>
       Change Picture
       </Button>
+      <button className='border btn p-2' type="button" onClick={handleButtonClick}>
+          <div className='rounded-3'><PencilIcon className='end-0 bottom-0' style={{height:"16px",width:"16px"}}/></div>
+        </button>
       </div>
     </form>
   );
