@@ -43,6 +43,11 @@ const data=[
       { name: 'Item 3', pagepath: '/Admin/NewPage/3' },
     ],
   },
+  {
+    pagename:'Upload Files',
+    pagepath:'/UploadFiles',
+    icon:RectangleStackIcon 
+  }
 ]
 
 function SidebarWithContent({navs,isButtonClicked}) {

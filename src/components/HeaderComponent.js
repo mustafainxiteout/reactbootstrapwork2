@@ -110,7 +110,7 @@ function HeaderComponent({onButtonClick,showsidebarbutton,isButtonClicked}) {
               </div>
               <div className="dropdown">
                 <button className="btn text-center border-0" aria-expanded="false" data-bs-toggle="dropdown" type="button">
-                {!imageUrl && <Image src='./avatar.jpg' alt='default' className='rounded-5 p-0 me-0 me-lg-1' style={{height:"22px", width:"22px"}}/>}
+                {!imageUrl && <Image src='/avatar.jpg' alt='profile' className='rounded-5 p-0 me-0 me-lg-1' style={{height:"22px", width:"22px"}}/>}
                 {imageUrl && <Image src={imageUrl} alt="Profile" className='rounded-5 p-0 me-0 me-lg-1' style={{height:"22px", width:"22px"}} />}
                 <span className='d-none d-lg-inline fw-bold'>Mustafa</span>
                 </button>

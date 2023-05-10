@@ -7,7 +7,7 @@ import { getpic } from './pictureAPI';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function UpdateProfilePicture() {
+function UpdateProfilePicture({status}) {
   const [image, setImage] = useState(null);
   const fileInputRef = useRef();
   const [imageUrl, setImageUrl] = useState('');
@@ -40,10 +40,13 @@ function UpdateProfilePicture() {
   }
 
   useEffect(()=>{
-    getpic().then((url) => setImageUrl(url));
-  },[]);
+    if (status){
+      getpic().then((url) => setImageUrl(url))
+    }
+  },[status]);
 
-  const handleButtonClick = () => {
+  const handleButtonClick = (event) => {
+    event.preventDefault();
     fileInputRef.current.click();
   };
 
@@ -61,7 +64,6 @@ function UpdateProfilePicture() {
     const formData = new FormData();
     formData.append('file', croppedImage, 'avatar.png');
     setImage(canvas);
-
     try {
       axios.put('/picture/profile-picture', formData,{
         headers: {
@@ -91,7 +93,7 @@ draggable
 pauseOnHover
 theme="light" />
       <div className='d-flex'>
-          {!image && !imageUrl && <Image src='./avatar.jpg' className='rounded-circle' width={250} height={250} alt="Default Pic"/>}
+          {!image && !imageUrl && <Image src='/avatar.jpg' className='rounded-circle' width={250} height={250} alt="Default Pic"/>}
           {!image && imageUrl && <Image src={imageUrl} alt="Profile" className='rounded-circle' width={250} height={250} />}
           {image && editor }
           {/* <Image src={URL.createObjectURL(image)} className='w-50 h-50 rounded-3' alt="Preview" /> */}
