@@ -44,3 +44,31 @@ code {
 .my-tab-btn:hover {
   background-color: #0d6efd1A;
 }
+
+.acc-header {
+    background-color: #0d6efd1A;
+}
+
+.custom-accordion .accordion-button:focus {
+  box-shadow: none;
+  outline: none;
+}
+
+.custom-accordion::-webkit-scrollbar {
+  width: 2px;
+}
+
+/* Track */
+.custom-accordion::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 2px white; 
+}
+ 
+/* Handle */
+.custom-accordion::-webkit-scrollbar-thumb {
+  background: #1C3F3A; 
+}
+
+/* Handle on hover */
+.custom-accordion::-webkit-scrollbar-thumb:hover {
+  background: #1C3F3A; 
+}

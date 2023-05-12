@@ -1,17 +1,54 @@
-import React, { useState } from 'react';
-import { Button, Form, Spinner } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Form, Spinner } from 'react-bootstrap';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
+import GetFiles from './GetFiles';
 
 function FileUploader() {
-  const [selectedOption, setSelectedOption] = useState('');
+  const [groups, setGroups] = useState([]);
+  const [usecases, setUsecases] = useState([]);
+  const [groupOption, setGroupOption] = useState('');
+  const [usecaseOption, setUsecaseOption]=useState('')
   const [files, setFiles] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const handleSelectChange = (event) => {
-    setSelectedOption(event.target.value);
+  const fetchGroups = () => {
+    // Replace 'API_URL' with the actual URL of your Flask API
+    axios.get('/filesupload/groups')
+      .then(response => {
+        setGroups(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching groups:', error);
+      });
   };
+
+  const handleGroupChange = (event) => {
+    const selectedGroup = event.target.value;
+    setGroupOption(selectedGroup);
+  };
+
+  const fetchUsecases = () => {
+    // Replace 'API_URL' with the actual URL of your Flask API
+    axios.get('/usecases/ucoptions')
+      .then(response => {
+        setUsecases(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching usecases:', error);
+      });
+  };
+
+  const handleUsecaseChange = (event) => {
+    const selectedusecase = event.target.value;
+    setUsecaseOption(selectedusecase);
+  };
+
+  useEffect(() => {
+    fetchGroups();
+    fetchUsecases();
+  }, []);
 
 
   const acceptedFileTypes = {
@@ -66,7 +103,8 @@ function FileUploader() {
 
   const emptyFilesState=()=>{
     setFiles([]);
-    setSelectedOption('');
+    setGroupOption('');
+    setUsecaseOption('');
   }
 
   const simulateUpload = () => {
@@ -94,12 +132,13 @@ function FileUploader() {
   }  
 
   const handleFileUpload = () => {
-    if (files.length > 0 && selectedOption) {
+    if (files.length > 0 && groupOption && usecaseOption) {
       setIsLoading(true);
       setProgress(0);
       const formData = new FormData();
       formData.append('file', files[0]);
-      formData.append('group', selectedOption);
+      formData.append('group', groupOption);
+      formData.append('ucid', usecaseOption)
       axios
         .post('/filesupload', formData)
         .then(response => {
@@ -116,14 +155,29 @@ function FileUploader() {
   };  
 
   return (
-    <section className='m-4'>
+    <div className='m-4'>
+    <section className='shadow p-4 rounded-3 bg-white border'>
     <Form.Group controlId="exampleForm.SelectCustom">
-        <Form.Label className='ms-1'>Company</Form.Label>
-        <Form.Select className='rounded-3 p-3' value={selectedOption} onChange={handleSelectChange}  style={{boxShadow: '0px 0px',borderColor:"lightgray"}}>
-          <option value="">Select Group</option>
-          <option value="Inxiteout">Inxiteout</option>
-          <option value="WHO">WHO</option>
-        </Form.Select>
+    <Form.Label className='ms-1'>Company</Form.Label>
+    <Form.Select className='rounded-3 p-2' onChange={handleGroupChange} value={groupOption} style={{boxShadow: '0px 0px',borderColor:"lightgray"}}>
+        <option value=''>Select a group</option>
+        {groups.map((group, index) => (
+          <option key={index} value={group.group}>
+            {group.group}
+          </option>
+        ))}
+      </Form.Select>
+      </Form.Group>
+      <Form.Group className='mt-3'>
+      <Form.Label className='ms-1'>Usecase</Form.Label>
+      <Form.Select className='rounded-3 p-2' onChange={handleUsecaseChange} value={usecaseOption} style={{boxShadow: '0px 0px',borderColor:"lightgray"}}>
+        <option value=''>Select a usecase</option>
+        {usecases.map((usecase, index) => (
+          <option key={index} value={usecase.ucid}>
+            {usecase.ucid} - {usecase.heading}
+          </option>
+        ))}
+      </Form.Select>
       </Form.Group>
     <Form.Label className='ms-1 mt-4'>Upload File</Form.Label>
     <div className='w-100 text-center rounded-3 bg-white shadow-small' style={{borderStyle:"dashed",borderColor:"lightgray"}}>
@@ -133,7 +187,7 @@ function FileUploader() {
       </div>
       <aside>
           {files.map(file => (
-            <p className='border py-3 mx-3 rounded-3 bg-light' key={file.path}>
+            <p className='border py-3 mx-3 px-2 rounded-3 bg-light text-break' key={file.path}>
               {file.path} - {convertBytesToMB(file.size)} MB
             </p>
           ))}
@@ -146,10 +200,12 @@ function FileUploader() {
             Uploading... {progress}%
           </div>
         ):(
-           <Button className='my-3' onClick={handleFileUpload}>Upload Files</Button>
+           <button className='btn btn-light rounded-3 border mt-3' onClick={handleFileUpload}>Upload Files</button>
         )
     }
     </section>
+    <GetFiles/>
+    </div>
   );
 }
 

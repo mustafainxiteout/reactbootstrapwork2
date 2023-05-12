@@ -59,8 +59,7 @@ function ViewUserProfile() {
           {showinput ? (
           <div className='d-flex gap-3 mb-3'>
           <Form.Check type="radio" label="Male" name="gender" value="male" checked={gender === 'male'} onChange={handleGenderChange}/>
-          <Form.Check type="radio" label="Female" name="gender" value="female" checked={gender === 'female'} onChange={handleGenderChange}/>
-          <Form.Check type="radio" label="Other" name="gender" value="other" checked={gender === 'other'} onChange={handleGenderChange}/>  
+          <Form.Check type="radio" label="Female" name="gender" value="female" checked={gender === 'female'} onChange={handleGenderChange}/> 
           </div>
           ) : (
             <Form.Text><p>{gender}</p></Form.Text>
