@@ -1,13 +1,40 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import {PencilIcon} from '@heroicons/react/24/outline'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios';
 
 function ViewUserProfile() {
-  const [firstName, setFirstName] = useState('Mustafa');
-  const [lastName, setLastName] = useState('test');
-  const [email, setEmail] = useState('test@gmail.com');
+  // Get the access token from wherever it is stored (e.g. local storage, Redux store, etc.)
+  const localaccessToken = localStorage.getItem('access_token');
+  const sessionaccessToken = sessionStorage.getItem('access_token');
+  const token = localaccessToken || sessionaccessToken;
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
   const [showinput, setShowInput] = useState(false);
-  const [gender, setGender] = useState('male');
+  const [gender, setGender] = useState('');
+  const navigate=useNavigate();
+
+  const fetchUserDetails = async () => {
+    try {
+      const response = await axios.get('/users',{headers: {
+        Authorization: `Bearer ${token}`
+      }}); // Replace '/api/user' with the actual API endpoint for fetching user details
+      const { first_name, last_name, email, gender } = response.data;
+      setFirstName(first_name);
+      setLastName(last_name);
+      setEmail(email);
+      setGender(gender);
+    } catch (error) {
+      console.error('Failed to fetch user details:', error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch user details from API here
+    fetchUserDetails();
+  },[]);
 
   const handleshowinputClick = () => {
     setShowInput(true);
@@ -17,23 +44,71 @@ function ViewUserProfile() {
     setFirstName(event.target.value);
   };
 
+
   const handleLastNameChange = (event) => {
     setLastName(event.target.value);
   };
 
   const handleGenderChange = (event) => {
     setGender(event.target.value);
-  };
+  };  
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
 
-
-
-  const handleUpdateClick = () => {
-    // Make API call to update user details here
+  const handleCancelClick = () =>{
     setShowInput(false);
+    fetchUserDetails();
+  }
+
+
+  const handleUpdateClick = async () => {
+    try {
+      await axios.put('/users', {
+        first_name:firstName,
+        last_name:lastName,
+        gender:gender,
+      },{headers: {
+        Authorization: `Bearer ${token}`
+      }}); // Replace '/api/user' with the actual API endpoint for updating user details
+      setShowInput(false);
+    } catch (error) {
+      alert('Failed to update user details:', error);
+    }
+  };
+
+  const handleReverify = () => {
+    axios.post('/users/reverify', {email:email})
+      .then((response) => {
+        // Handle the response data
+        alert('Verification Email will be sent to the email.');
+        // remove access token from local storage
+        localStorage.removeItem("access_token");
+        sessionStorage.removeItem("access_token");
+        navigate('/');
+      })
+      .catch((error) => {
+        // Handle the error
+        alert(error);
+      });
+  };
+
+  const handleUpdateEmail = async () => {
+    try {
+      await axios.put('/users', {
+        first_name:firstName,
+        last_name:lastName,
+        gender:gender,
+        email:email
+      },{headers: {
+        Authorization: `Bearer ${token}`
+      }}); // Replace '/api/user' with the actual API endpoint for updating user details
+      setShowInput(false);
+      handleReverify();
+    } catch (error) {
+      alert(error.response.data.message);
+    }
   };
 
   return (
@@ -69,14 +144,14 @@ function ViewUserProfile() {
       <Form.Group controlId="formEmail">
       <Form.Label>Email:</Form.Label>
           {showinput ? (
-              <Form.Control className='mb-3' type="email" value={email} onChange={handleEmailChange} />
+              <div className='d-flex gap-2'><Form.Control className='mb-3' type="email" value={email} onChange={handleEmailChange} /><button className='btn btn-light m-0 mb-3 shadow-small border' onClick={handleUpdateEmail}>Verify</button></div>
           ) : (
             <Form.Text><p>{email}</p></Form.Text>
           )}
       </Form.Group>
       {showinput && (
         <div className='d-flex gap-3'>
-        <Button className='btn-danger w-50' onClick={handleUpdateClick}>Cancel</Button>
+        <Button className='btn-danger w-50' onClick={handleCancelClick}>Cancel</Button>
         <Button className='btn-primary w-50' onClick={handleUpdateClick}>Update</Button>
         </div>
       )}

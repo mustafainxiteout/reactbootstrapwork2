@@ -47,6 +47,11 @@ const data=[
     pagename:'Upload Files',
     pagepath:'/UploadFiles',
     icon:RectangleStackIcon 
+  },
+  {
+    pagename:'New Table',
+    pagepath:'/NewTable',
+    icon:RectangleStackIcon 
   }
 ]
 

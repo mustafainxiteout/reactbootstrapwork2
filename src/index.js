@@ -18,6 +18,7 @@ import Usecases from './components/Usecases';
 import UserContent from './components/UserContent';
 import Forgotpassword from './components/Forgotpassword';
 import FileUploader from './components/FileUploader';
+import NewTable from './components/NewTable';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -34,6 +35,7 @@ root.render(
     <Route exact path='/Admin/Usecases' element={<Adminpage navi={<Usecases/>}/>}/>
     <Route exact path='/ViewProfile' element={isAdmin ? <Adminpage navi={<UserContent/>}/> : <Userpage contentarea={<UserContent/>}/>} isAdmin={isAdmin}/>
     <Route exact path='/UploadFiles' element={<Adminpage navi={<FileUploader/>}/>} isAdmin={isAdmin}/>
+    <Route exact path='/NewTable' element={<Adminpage navi={<NewTable/>}/>} isAdmin={isAdmin}/>
     </Routes>
   </Router>
 );
