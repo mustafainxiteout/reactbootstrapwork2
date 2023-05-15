@@ -18,7 +18,10 @@ function NewTable() {
       };
     
       const handleCancelClick = (id) => {
-        setEditingIds(editingIds.filter((editingId) => editingId !== id));
+          // Reset the data to the initial state
+          setData(initialData);
+          // Remove the id from the editingIds array
+          setEditingIds(editingIds.filter((editingId) => editingId !== id));
       };
     
       const handleUpdateClick = (id) => {
@@ -28,13 +31,7 @@ function NewTable() {
         );
         setData(updatedData);
         setEditingIds(editingIds.filter((editingId) => editingId !== id));
-      };
-    
-      //const handleCellClick = (id) => {
-        //if (!editingIds.includes(id)) {
-          //setEditingIds([...editingIds, id]);
-        //}
-      //};
+      };   
     
       const handleInputChange = (e, id, field) => {
         const updatedData = data.map((item) =>
@@ -56,10 +53,7 @@ function NewTable() {
       <tbody>
       {data.map((item) => (
           <tr key={item.id}>
-          <td
-            //onClick={() => handleCellClick(item.id)}
-            //style={{ cursor: 'pointer' }}
-          >
+          <td>
             {editingIds.includes(item.id) ? (
               <Form.Control
                 type="text"
@@ -67,13 +61,10 @@ function NewTable() {
                 onChange={(e) => handleInputChange(e, item.id, 'name')}
               />
             ) : (
-              item.name
-            )}
+              <p>{item.name}</p>
+              )}
           </td>
-          <td
-            //onClick={() => handleCellClick(item.age)}
-            //style={{ cursor: 'pointer' }}
-          >
+          <td>
             {editingIds.includes(item.id) ? (
               <Form.Control
                 type="number"
@@ -81,13 +72,10 @@ function NewTable() {
                 onChange={(e) => handleInputChange(e, item.id, 'age')}
               />
             ) : (
-              item.age
+                <p>{item.age}</p>
             )}
           </td>
-          <td
-            //onClick={() => handleCellClick(item.addressType)}
-            //style={{ cursor: 'pointer' }}
-          >
+          <td>
             {editingIds.includes(item.id) ? (
               <Form.Select
                 value={item.addressType}
@@ -98,7 +86,7 @@ function NewTable() {
                 <option value="Office">Office</option>
               </Form.Select>
             ) : (
-              item.addressType
+                <p>{item.addressType}</p>
             )}
           </td>
           <td>
