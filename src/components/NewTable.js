@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Form } from 'react-bootstrap';
+import axios from 'axios';
 
 function NewTable() {
-    const initialData = [
-        { id: 1, name: 'John Doe', age: 30, addressType: 'Local' },
-        { id: 2, name: 'Jane Smith', age: 25, addressType: 'Home' },
-        { id: 3, name: 'Bob Johnson', age: 35, addressType: 'Office' }
-      ];
     
-      const [data, setData] = useState(initialData);
+      const [data, setData] = useState([]);
+
+      const fetchTableDetails = () => {
+          axios.get('/newtableapi') // Replace '/api/user' with the actual API endpoint for fetching user details
+          .then(response => setData(response.data))
+          .catch(error => console.log(error));
+      };
+
+      useEffect(() => {
+        fetchTableDetails();
+      },[])
+
       const [editingIds, setEditingIds] = useState([]);
 
       const handleEditClick = (id) => {
@@ -19,23 +26,23 @@ function NewTable() {
     
       const handleCancelClick = (id) => {
           // Reset the data to the initial state
-          setData(initialData);
+          fetchTableDetails();
           // Remove the id from the editingIds array
           setEditingIds(editingIds.filter((editingId) => editingId !== id));
-      };
-    
+      };  
+
       const handleUpdateClick = (id) => {
-        // Perform update logic here for the specific record with the given id
-        const updatedData = data.map((item) =>
-          item.id === id ? { ...item, isEditing: false } : item
-        );
-        setData(updatedData);
-        setEditingIds(editingIds.filter((editingId) => editingId !== id));
-      };   
+        const updatedItem = data.find(item => item.t_id === id);
+        axios.put(`/newtableapi/${id}`, updatedItem)
+          .then(response => {
+            setEditingIds(editingIds.filter((editingId) => editingId !== id));
+          })
+          .catch(error => console.log(error));
+      };
     
       const handleInputChange = (e, id, field) => {
         const updatedData = data.map((item) =>
-          item.id === id ? { ...item, [field]: e.target.value } : item
+          item.t_id === id ? { ...item, [field]: e.target.value } : item
         );
         setData(updatedData);
       };
@@ -52,55 +59,55 @@ function NewTable() {
       </thead>
       <tbody>
       {data.map((item) => (
-          <tr key={item.id}>
+          <tr key={item.t_id}>
           <td>
-            {editingIds.includes(item.id) ? (
+            {editingIds.includes(item.t_id) ? (
               <Form.Control
                 type="text"
                 value={item.name}
-                onChange={(e) => handleInputChange(e, item.id, 'name')}
+                onChange={(e) => handleInputChange(e, item.t_id, 'name')}
               />
             ) : (
               <p>{item.name}</p>
               )}
           </td>
           <td>
-            {editingIds.includes(item.id) ? (
+            {editingIds.includes(item.t_id) ? (
               <Form.Control
                 type="number"
                 value={item.age}
-                onChange={(e) => handleInputChange(e, item.id, 'age')}
+                onChange={(e) => handleInputChange(e, item.t_id, 'age')}
               />
             ) : (
                 <p>{item.age}</p>
             )}
           </td>
           <td>
-            {editingIds.includes(item.id) ? (
+            {editingIds.includes(item.t_id) ? (
               <Form.Select
-                value={item.addressType}
-                onChange={(e) => handleInputChange(e, item.id, 'addressType')}
+                value={item.addresstype}
+                onChange={(e) => handleInputChange(e, item.t_id, 'addresstype')}
               >
                 <option value="Local">Local</option>
                 <option value="Home">Home</option>
                 <option value="Office">Office</option>
               </Form.Select>
             ) : (
-                <p>{item.addressType}</p>
+                <p>{item.addresstype}</p>
             )}
           </td>
           <td>
-          {editingIds.includes(item.id) ? (
+          {editingIds.includes(item.t_id) ? (
               <div className='d-flex gap-2'>
-                <button className='btn btn-light py-1 border shadow-small' onClick={() => handleUpdateClick(item.id)}>
+                <button className='btn btn-light py-1 border shadow-small' onClick={() => handleUpdateClick(item.t_id)}>
                   Update
                 </button>
-                <button className='btn btn-light py-1 border shadow-small' onClick={()=>handleCancelClick(item.id)}>
+                <button className='btn btn-light py-1 border shadow-small' onClick={()=>handleCancelClick(item.t_id)}>
                   Cancel
                 </button>
               </div>
             ) : (
-              <button className='btn btn-light py-1 border shadow-small' onClick={()=>handleEditClick(item.id)}>
+              <button className='btn btn-light py-1 border shadow-small' onClick={()=>handleEditClick(item.t_id)}>
                 Edit
               </button>
             )}
