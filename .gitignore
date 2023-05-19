@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+/src/components/SampleDataGrid.js
+/src/components/NewTable.js
+
 # testing
 /coverage
 

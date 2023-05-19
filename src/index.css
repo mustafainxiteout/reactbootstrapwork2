@@ -72,3 +72,18 @@ code {
 .custom-accordion::-webkit-scrollbar-thumb:hover {
   background: #1C3F3A; 
 }
+
+.rdg-cell {
+  min-height: fit-content;
+}
+
+&:hover .rdg-cell {
+    min-height: fit-content;
+}
+
+/* Styles for small media width screens */
+@media screen and (max-width: 768px) {
+  .rdg-text-editor {
+    visibility: visible;
+  }
+}

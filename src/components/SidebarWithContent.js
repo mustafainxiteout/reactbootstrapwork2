@@ -49,8 +49,8 @@ const data=[
     icon:RectangleStackIcon 
   },
   {
-    pagename:'New Table',
-    pagepath:'/NewTable',
+    pagename:'Data Table',
+    pagepath:'/SampleTable',
     icon:RectangleStackIcon 
   }
 ]

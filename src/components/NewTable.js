@@ -5,6 +5,8 @@ import axios from 'axios';
 function NewTable() {
     
       const [data, setData] = useState([]);
+      const [editingIds, setEditingIds] = useState([]);
+      const [editingCells, setEditingCells] = useState([]);
 
       const fetchTableDetails = () => {
           axios.get('/newtableapi') // Replace '/api/user' with the actual API endpoint for fetching user details
@@ -16,7 +18,26 @@ function NewTable() {
         fetchTableDetails();
       },[])
 
-      const [editingIds, setEditingIds] = useState([]);
+      const handleEditCellClick = (id, field) => {
+        if (!editingCells.find(cell => cell.id === id && cell.field === field)) {
+          setEditingCells([...editingCells, { id, field }]);
+        }
+      };
+    
+      const handleCancelCellClick = (id, field) => {
+        setEditingCells(editingCells.filter(cell => !(cell.id === id && cell.field === field)));
+      };
+
+      const handleUpdateCellClick = (id, field, value) => {
+        const updatedItem = data.find(item => item.t_id === id);
+        updatedItem[field] = value;
+        axios.put(`/newtableapi/${id}`, updatedItem) // Replace '/newtableapi' with the actual API endpoint for updating table details
+          .then(response => {
+            fetchTableDetails();
+            setEditingCells(editingCells.filter(cell => !(cell.id === id && cell.field === field)));
+          })
+          .catch(error => console.log(error));
+      };    
 
       const handleEditClick = (id) => {
         if (!editingIds.includes(id)) {
@@ -41,9 +62,15 @@ function NewTable() {
       };
     
       const handleInputChange = (e, id, field) => {
-        const updatedData = data.map((item) =>
-          item.t_id === id ? { ...item, [field]: e.target.value } : item
+        const updatedData = data.map(item =>
+          item.t_id === id ? { ...item } : item
         );
+        const updatedValue = e.target.value;
+        updatedData.forEach(item => {
+          if (item.t_id === id) {
+            item[field] = updatedValue;
+          }
+        });
         setData(updatedData);
       };
 
@@ -61,14 +88,14 @@ function NewTable() {
       {data.map((item) => (
           <tr key={item.t_id}>
           <td>
-            {editingIds.includes(item.t_id) ? (
+          {editingCells.find(cell => cell.id === item.t_id && cell.field === 'name') ? (
               <Form.Control
                 type="text"
                 value={item.name}
                 onChange={(e) => handleInputChange(e, item.t_id, 'name')}
               />
             ) : (
-              <p>{item.name}</p>
+              <p onClick={() => handleEditCellClick(item.t_id, 'name')}>{item.name}</p>
               )}
           </td>
           <td>
