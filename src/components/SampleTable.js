@@ -18,8 +18,7 @@ function EditableCell({ value: initialValue, row: { index, original}, column: { 
   const onChange = (e) => {
     const updatedValue = e.target.value;
     setValue(updatedValue);
-    const rowIds = selectedFlatRows.map((row) => row.index);
-    updateCell(index, id, updatedValue, rowIds);
+    updateCell(index, id, updatedValue);
   };
   
   
@@ -113,7 +112,8 @@ function SampleTable() {
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 5, sortBy: [{ id: 't_id', desc: true }] }
+      initialState: { pageIndex: 0, pageSize: 5, sortBy: [{ id: 't_id', desc: true }] },
+      autoResetSelectedRows: false,
     },
     useSortBy,
     usePagination,
@@ -198,49 +198,11 @@ function SampleTable() {
     setTotalPage(Math.ceil(data.length / newPageSize));
     gotoPage(0); // Reset to the first page when changing the page size
   };
-
-  const updateCellhooks = (hooks, rowIds) => {
-    const columnIndex = Array.isArray(hooks) ? hooks.findIndex((hook) => hook.id === 'selection') : -1;
-    console.log(columnIndex);
-    if (columnIndex !== -1) {
-      hooks[columnIndex].Cell = ({ row }) => <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />;
-      console.log('ok')
-    }
-    else{
-      const updatedSelectedData = [...selectedFlatRows];
-      console.log(updatedSelectedData)
-      rowIds.forEach((rowId) => {
-        if (rowId >= 0 && rowId < updatedSelectedData.length) {
-          if (updatedSelectedData[rowId].isSelected===false) {
-            // Call the updateCellhooks function with the provided hooks and rowIds
-            updatedSelectedData[rowId].isSelected=true;
-            console.log(updatedSelectedData)
-          }
-        }
-      });
-    }
-    
-    // Perform additional operations with rowIds if needed
-  };
   
-  const updateCell = (rowIndex, columnId, value, rowIds) => {
+  const updateCell = (rowIndex, columnId, value) => {
     const updatedData = [...data];
     updatedData[rowIndex][columnId] = value;
     setData(updatedData);
-  
-    const updatedSelectedData = [...data];
-  
-    if (rowIds) {
-      rowIds.forEach((rowId) => {
-        if (rowId >= 0 && rowId < updatedSelectedData.length) {
-          if (!updatedSelectedData[rowId].isSelected) {
-            // Call the updateCellhooks function with the provided hooks and rowIds
-            updateCellhooks(updatedSelectedData[rowId],rowIds);
-          }
-        }
-      });
-    }
-    
     // Return any necessary values or perform additional operations
   };
   
