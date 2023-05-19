@@ -5,7 +5,7 @@ import { Form, Pagination, Table } from 'react-bootstrap';
 import { CSVLink } from 'react-csv';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
-import {ChevronDownIcon } from '@heroicons/react/24/outline';
+import {ArrowDownIcon } from '@heroicons/react/24/outline';
 import EditableCell from './EditableCell';
 
 function SampleTable() {
@@ -38,7 +38,7 @@ function SampleTable() {
 
   const columns = useMemo(
     () => [
-      { Header: 'Name', accessor: 'name', Cell: (props) => <EditableCell {...props} selectMultiple={selectMultiple} /> },
+      { Header: 'Name', accessor: 'name', Cell: (props) => <EditableCell {...props} selectMultiple={selectMultiple} />},
       { Header: 'Age', accessor: 'age', Cell: (props) => <EditableCell {...props} selectMultiple={selectMultiple} /> },
       { Header: 'Address Type', accessor: 'addresstype', Cell: (props) => <EditableCell {...props} selectMultiple={selectMultiple} /> },
       {
@@ -77,7 +77,7 @@ function SampleTable() {
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 5, sortBy: [{ id: 't_id', desc: true }] },
+      initialState: { pageIndex: 0, pageSize: 10 },
       autoResetSelectedRows: false,
     },
     useSortBy,
@@ -87,6 +87,10 @@ function SampleTable() {
       hooks.visibleColumns.push((columns) => [
         {
           id: 'selection',
+          disableResizing: true,
+          minWidth: 5,
+          width: 5,
+          maxWidth: 5,
           Header: ({ getToggleAllRowsSelectedProps }) => (
             <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()}/>
           ),
@@ -241,19 +245,46 @@ function SampleTable() {
     setSelectMultiple(true);
   }
 
+    // Modify the pagination section
+    const renderPagination = () => {
+      const pageCount = Math.ceil(data.length / pageSize);
+      const pageNumbers = [];
+  
+      for (let i = 0; i < pageCount; i++) {
+        pageNumbers.push(i);
+      }
+  
+      return (
+        <Pagination className="m-2 mt-0">
+          <Pagination.First onClick={() => gotoPage(0)} disabled={!canPreviousPage} />
+          <Pagination.Prev onClick={() => previousPage()} disabled={!canPreviousPage} />
+          {pageNumbers.map((pageNumber, index) => {
+            if (pageNumber === 0 || pageNumber === pageCount - 1 || Math.abs(pageNumber - pageIndex) <= 1) {
+              return (
+                <Pagination.Item
+                  key={index}
+                  active={pageIndex === pageNumber}
+                  onClick={() => {
+                    gotoPage(pageNumber);
+                  }}
+                >
+                  {pageNumber + 1}
+                </Pagination.Item>
+              );
+            } else if (pageNumber === 1 || pageNumber === pageCount - 2) {
+              return <Pagination.Ellipsis key={index} />;
+            }
+            return null;
+          })}
+          <Pagination.Next onClick={() => nextPage()} disabled={!canNextPage} />
+          <Pagination.Last onClick={() => gotoPage(totalPage - 1)} disabled={!canNextPage} />
+        </Pagination>
+      );
+    };
+
   return (
     <div className="m-3 rounded-3 border bg-white shadow overflow-auto">
       <div className="d-flex gap-2 justify-content-end p-1">
-        <div className="my-2">
-          <label className="me-3 d-none d-lg-inline">Records per page:</label>
-          <select className="p-2 btn border rounded small-shadow" value={pageSize} onChange={handlePageChange}>
-            {[1, 2, 5].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                Show {pageSize}
-              </option>
-            ))}
-          </select>
-        </div>
         {!selectMultiple &&
         <button className="btn btn-light my-2 border text-nowrap" onClick={handlemultipleselectchange}>
           <small>Edit Multiple</small>
@@ -276,7 +307,7 @@ function SampleTable() {
       </div>
       <div className="d-flex gap-2 p-2 py-2 border-top">
         <Form.Control type="text" pattern="^\S*$" style={{ boxShadow: '0px 0px' }} placeholder="Name" value={newData.name} onChange={(e) => setNewData({ ...newData, name: e.target.value })} />
-        <Form.Control type="text" pattern="^\S*$" style={{ boxShadow: '0px 0px' }} placeholder="Age" value={newData.age} onChange={(e) => setNewData({ ...newData, age: e.target.value })} />
+        <Form.Control type="number" pattern="^\S*$" style={{ boxShadow: '0px 0px' }} placeholder="Age" value={newData.age} onChange={(e) => setNewData({ ...newData, age: e.target.value })} />
         <Form.Select style={{ boxShadow: '0px 0px' }} value={newData.addresstype} onChange={(e) => setNewData({ ...newData, addresstype: e.target.value })}>
             <option value="">Choose Address Type</option>
             <option value="Home">Home</option>
@@ -287,24 +318,24 @@ function SampleTable() {
           <small>Add New</small>
         </button>
       </div>
-      <Table {...getTableProps()} bordered striped className='table-scroll'>
+      <Table {...getTableProps()} bordered responsive className='table-scroll'>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
                 <th key={column.id} {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render('Header')}
-                  <span>
+                   <span>
                     {column.isSorted ? (
                       column.isSortedDesc ? (
-                        <ChevronDownIcon className='text-black' style={{height:"16px",width:"16px", marginLeft: "8px",transform: 'rotateZ(-180deg)'}}/>
+                        <ArrowDownIcon className='text-black' style={{height:"16px",width:"16px", marginRight: "8px",transform: 'rotateZ(-180deg)'}}/>
                       ) : (
-                        <ChevronDownIcon className='text-black' style={{height:"16px",width:"16px", marginLeft: "8px"}}/>
+                        <ArrowDownIcon className='text-black' style={{height:"16px",width:"16px", marginRight: "8px"}}/>
                       )
                     ) : (
                       ''
                     )}
                   </span>
+                  {column.render('Header')}
                 </th>
               ))}
             </tr>
@@ -317,7 +348,7 @@ function SampleTable() {
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => {
                   return (
-                    <td key={cell.row.index} {...cell.getCellProps()}>
+                    <td className='p-2 w-25' key={cell.row.index} {...cell.getCellProps()}>
                       {cell.render('Cell', { updateCell })}
                     </td>
                   );
@@ -327,23 +358,19 @@ function SampleTable() {
           })}
         </tbody>
       </Table>
-        <Pagination className='m-2 mt-0'>
-          <Pagination.First onClick={() => gotoPage(0)} disabled={!canPreviousPage} />
-          <Pagination.Prev onClick={() => previousPage()} disabled={!canPreviousPage} />
-          {[...Array(totalPage)].map((_, index) => (
-          <Pagination.Item
-            key={index}
-            active={pageIndex === index}
-            onClick={() => {
-              gotoPage(index);
-            }}
-          >
-            {index + 1}
-          </Pagination.Item>
-        ))}
-          <Pagination.Next onClick={() => nextPage()} disabled={!canNextPage} />
-          <Pagination.Last onClick={() => gotoPage(totalPage - 1)} disabled={!canNextPage} />
-        </Pagination>
+      <div className='d-flex justify-content-end'>
+      <div>
+          <label className="me-3 d-none d-lg-inline">Rows per page:</label>
+          <select className="p-2 px-0 btn border rounded small-shadow" value={pageSize} onChange={handlePageChange}>
+            {[10, 20, 50].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                Show {pageSize}
+              </option>
+            ))}
+          </select>
+        </div>
+        {renderPagination()}
+        </div>
     </div>
   );
 }
