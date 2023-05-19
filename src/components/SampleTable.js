@@ -6,76 +6,41 @@ import { CSVLink } from 'react-csv';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 import {ChevronDownIcon } from '@heroicons/react/24/outline';
-
-function EditableCell({ value: initialValue, row: { index, original}, column: { id }, updateCell, selectedFlatRows }) {
-  const [value, setValue] = useState(initialValue);
-  const [isEditing, setIsEditing] = useState(false);
-
-  const toggleEditing = () => {
-    setIsEditing(!isEditing);
-  };
-
-  const onChange = (e) => {
-    const updatedValue = e.target.value;
-    setValue(updatedValue);
-    updateCell(index, id, updatedValue);
-  };
-  
-  
-  const onBlur = () => {
-    toggleEditing();
-  };
-
-  const handleClick = (e) => {
-    e.stopPropagation(); // Stop the event propagation to the checkbox's click event
-    toggleEditing();
-  };
-
-  const handlePropogationClick = (e) => {
-    e.stopPropagation(); // Stop event propagation to prevent unselecting the row
-  };
-
-  const onSelectChange = (e) => {
-    setValue(e.target.value);
-    toggleEditing();
-  };
-
-  useEffect(() => {
-    if (selectedFlatRows.some((row) => row.original.t_id === original.t_id)) {
-      setIsEditing(true);
-    }
-  }, [selectedFlatRows, original.t_id]);
-
-  return(
-<div onClick={handleClick}>
-  {isEditing && id === 'addresstype' &&
-          <Form.Select value={value} onChange={onSelectChange} onBlur={onBlur} onClick={handlePropogationClick}>
-            <option value="Home">Home</option>
-            <option value="Local">Local</option>
-            <option value="Office">Office</option>
-          </Form.Select>
-  }
-  {isEditing && id==='age' && 
-          <Form.Control type="number" pattern="^\S*$" style={{ boxShadow: '0px 0px' }} value={value} onChange={onChange} onBlur={onBlur} onClick={handlePropogationClick}/>
-  }
-  {isEditing && id==='name' && 
-          <Form.Control type="text" pattern="^\S*$" style={{ boxShadow: '0px 0px' }} value={value} onChange={onChange} onBlur={onBlur} onClick={handlePropogationClick}/>
-    }
-  {!isEditing && <div onClick={handleClick}>{value}</div>}
-  </div>
-  )
-}
-
+import EditableCell from './EditableCell';
 
 function SampleTable() {
   const [data, setData] = useState([]);
   const [totalPage, setTotalPage] = useState(1);
+  const [selectMultiple,setSelectMultiple]=useState(false);
+
+
+  const handlesaveChanges = async (row) => {
+    try {
+      const API_URL = `/newtableapi/${row.t_id}`;
+      const response = await axios.put(API_URL, row);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handledeleteChanges = async (row) => {
+    try {
+      const API_URL = `/newtableapi/${row.t_id}`;
+      const response = await axios.delete(API_URL);
+      fetchData();
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
 
   const columns = useMemo(
     () => [
-      { Header: 'Name', accessor: 'name', Cell: EditableCell },
-      { Header: 'Age', accessor: 'age', Cell: EditableCell },
-      { Header: 'Address Type', accessor: 'addresstype', Cell: EditableCell },
+      { Header: 'Name', accessor: 'name', Cell: (props) => <EditableCell {...props} selectMultiple={selectMultiple} /> },
+      { Header: 'Age', accessor: 'age', Cell: (props) => <EditableCell {...props} selectMultiple={selectMultiple} /> },
+      { Header: 'Address Type', accessor: 'addresstype', Cell: (props) => <EditableCell {...props} selectMultiple={selectMultiple} /> },
       {
         Header: 'Actions',
         accessor: 't_id',
@@ -91,7 +56,7 @@ function SampleTable() {
         ),
       },
     ],
-    []
+    [selectMultiple]
   );
 
   const {
@@ -146,27 +111,6 @@ function SampleTable() {
       </>
     );
   });
-
-  const handlesaveChanges = async (row) => {
-    try {
-      const API_URL = `/newtableapi/${row.t_id}`;
-      const response = await axios.put(API_URL, row);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handledeleteChanges = async (row) => {
-    try {
-      const API_URL = `/newtableapi/${row.t_id}`;
-      const response = await axios.delete(API_URL);
-      fetchData();
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const fetchData = async () => {
     try {
@@ -293,6 +237,10 @@ function SampleTable() {
       });
   };
 
+  const handlemultipleselectchange=()=>{
+    setSelectMultiple(true);
+  }
+
   return (
     <div className="m-3 rounded-3 border bg-white shadow overflow-auto">
       <div className="d-flex gap-2 justify-content-end p-1">
@@ -306,9 +254,16 @@ function SampleTable() {
             ))}
           </select>
         </div>
+        {!selectMultiple &&
+        <button className="btn btn-light my-2 border text-nowrap" onClick={handlemultipleselectchange}>
+          <small>Edit Multiple</small>
+        </button>
+        }
+        {selectMultiple &&
         <button className="btn btn-light my-2 border text-nowrap" onClick={saveChanges}>
           <small>Update selected</small>
         </button>
+        }
         <button className="btn btn-light my-2 border text-nowrap" onClick={deleteChanges}>
           <small>Delete selected</small>
         </button>
