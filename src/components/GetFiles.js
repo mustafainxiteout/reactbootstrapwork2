@@ -102,7 +102,7 @@ function GetFiles() {
       <button className='btn btn-light rounded-3 border mt-3 col-lg-1' onClick={handleGroupFiles}>Fetch Files</button>
     
       {selectedGroup && selectedUsecase && !msg && (
-      <Accordion className="custom-accordion mt-3" style={{maxHeight: "110px", overflowY: "auto",overflowX:"hidden"}}>
+      <Accordion className="custom-accordion custom-scroll mt-3" style={{maxHeight: "110px", overflowY: "auto",overflowX:"hidden"}}>
       {files.map((file, index) => (
       <Accordion.Item eventKey={index.toString()} key={index}>
         <Accordion.Header className='text-break'>{file.file_name}</Accordion.Header>

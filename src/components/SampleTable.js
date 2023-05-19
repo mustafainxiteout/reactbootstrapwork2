@@ -283,26 +283,31 @@ function SampleTable() {
     };
 
   return (
-    <div className="m-3 rounded-3 border bg-white shadow overflow-auto">
+    <div className="m-3 rounded-3 border bg-white shadow overflow-auto custom-scroll" style={{maxHeight:"85vh"}}>
       <div className="d-flex gap-2 justify-content-end p-1">
         {!selectMultiple &&
         <button className="btn btn-light my-2 border text-nowrap" onClick={handlemultipleselectchange}>
-          <small>Edit Multiple</small>
+          <small className='d-none d-lg-inline'>Edit Multiple</small>
+          <small className='d-inline d-lg-none'>Edit</small>
         </button>
         }
         {selectMultiple &&
         <button className="btn btn-light my-2 border text-nowrap" onClick={saveChanges}>
-          <small>Update selected</small>
+          <small className='d-none d-lg-inline'>Update Selected</small>
+          <small className='d-inline d-lg-none'>Update</small>
         </button>
         }
         <button className="btn btn-light my-2 border text-nowrap" onClick={deleteChanges}>
-          <small>Delete selected</small>
+          <small className='d-none d-lg-inline'>Delete Selected</small>
+          <small className='d-inline d-lg-none'>Delete</small>
         </button>
         <CSVLink className="btn btn-light my-2 border text-nowrap" data={csvData} filename="data.csv">
-          <small>Export to CSV</small>
+          <small className='d-none d-lg-inline'>Export to CSV</small>
+          <small className='d-inline d-lg-none'>CSV</small>
         </CSVLink>
         <button className="btn btn-light my-2 me-2 border text-nowrap" onClick={exportToPDF}>
-          <small>Export to PDF</small>
+          <small className='d-none d-lg-inline'>Export to PDF</small>
+          <small className='d-inline d-lg-none'>PDF</small>
         </button>
       </div>
       <div className="d-flex gap-2 p-2 py-2 border-top">
@@ -318,7 +323,7 @@ function SampleTable() {
           <small>Add New</small>
         </button>
       </div>
-      <Table {...getTableProps()} bordered responsive className='table-scroll'>
+      <Table {...getTableProps()} bordered responsive hover className='table-scroll mb-2'>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -358,11 +363,11 @@ function SampleTable() {
           })}
         </tbody>
       </Table>
-      <div className='d-flex justify-content-end'>
-      <div>
+      <div className='d-lg-flex justify-content-end'>
+      <div className='p-2 pt-0 p-lg-0'>
           <label className="me-3 d-none d-lg-inline">Rows per page:</label>
-          <select className="p-2 px-0 btn border rounded small-shadow" value={pageSize} onChange={handlePageChange}>
-            {[10, 20, 50].map((pageSize) => (
+          <select className="p-lg-2 px-0 btn border rounded small-shadow" value={pageSize} onChange={handlePageChange}>
+            {[10,20,50].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
                 Show {pageSize}
               </option>

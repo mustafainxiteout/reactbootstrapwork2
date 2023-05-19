@@ -54,25 +54,26 @@ code {
   outline: none;
 }
 
-.custom-accordion::-webkit-scrollbar {
+.custom-scroll::-webkit-scrollbar {
   width: 2px;
 }
 
 /* Track */
-.custom-accordion::-webkit-scrollbar-track {
+.custom-scroll::-webkit-scrollbar-track {
   box-shadow: inset 0 0 2px white; 
 }
  
 /* Handle */
-.custom-accordion::-webkit-scrollbar-thumb {
+.custom-scroll::-webkit-scrollbar-thumb {
   background: #1C3F3A; 
 }
 
 /* Handle on hover */
-.custom-accordion::-webkit-scrollbar-thumb:hover {
+.custom-scroll::-webkit-scrollbar-thumb:hover {
   background: #1C3F3A; 
 }
 
+/*
 .rdg-cell {
   min-height: fit-content;
 }
@@ -81,9 +82,10 @@ code {
     min-height: fit-content;
 }
 
-/* Styles for small media width screens */
+Styles for small media width screens 
 @media screen and (max-width: 768px) {
   .rdg-text-editor {
     visibility: visible;
   }
 }
+*/
