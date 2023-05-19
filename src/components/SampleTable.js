@@ -363,10 +363,10 @@ function SampleTable() {
           })}
         </tbody>
       </Table>
-      <div className='d-lg-flex justify-content-end'>
-      <div className='p-2 pt-0 p-lg-0'>
-          <label className="me-3 d-none d-lg-inline">Rows per page:</label>
-          <select className="p-lg-2 px-0 btn border rounded small-shadow" value={pageSize} onChange={handlePageChange}>
+      <div className='d-md-flex justify-content-end'>
+      <div className='p-2 pt-0 p-md-0'>
+          <label className="me-2 d-none d-md-inline">Rows per page:</label>
+          <select className="p-md-2 px-0 btn border rounded small-shadow" value={pageSize} onChange={handlePageChange}>
             {[10,20,50].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
                 Show {pageSize}
