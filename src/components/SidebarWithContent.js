@@ -52,6 +52,11 @@ const data=[
     pagename:'Data Table',
     pagepath:'/SampleTable',
     icon:RectangleStackIcon 
+  },
+  {
+    pagename:'Remote Form',
+    pagepath:'/RemoteForm',
+    icon:RectangleStackIcon 
   }
 ]
 
